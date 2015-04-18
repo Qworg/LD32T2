@@ -26,6 +26,21 @@ function StudentFactory() {
             console.debug(student.stats);
         }
         
+        student.returnTextStats = function () {
+            var textOutput = student.name + 
+                " is a " + student.gender + 
+                " student in House " + student.house + ".  They are " + 
+                simpleNumberToTextValue(student.stats.strength) + " strong, " + 
+                simpleNumberToTextValue(student.stats.dexterity) + " dextrous, " +
+                simpleNumberToTextValue(student.stats.constitution) + " hardy, " + 
+                simpleNumberToTextValue(student.stats.intelligence) + " intelligent, and " +
+                simpleNumberToTextValue(student.stats.charisma) + " charismatic." + 
+                " They have " + simpleNumberToNegativeTextValue(student.stats.narcissism) + " narcissistic tendencies, " +
+                simpleNumberToNegativeTextValue(student.stats.machiavellianism) + " Machiavellian tendencies, and " +
+                simpleNumberToNegativeTextValue(student.stats.psychopathy) + " psychopathic tendencies.";
+            console.debug(textOutput);
+        }
+        
         return student;
     }
     

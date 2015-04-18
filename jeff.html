@@ -5,6 +5,7 @@
     <title>You're a D, Harry!</title>
     <script src="libs/phaser-2.3.0.js"></script>
     <script src="libs/namey-api.js"></script>
+    <script src="text-gen.js"></script>
     <script src="student-gen.js"></script>
     <script src="house-gen.js"></script>
                                     
@@ -46,7 +47,7 @@
         len = students.length;
         if (students[len-1].name != "ERRORNAME" && isLoaded === false) {
             for (var i = 0; i < len; i++) {
-                students[i].returnStats();
+                students[i].returnTextStats();
             }
             for (var i = 0; i < houses.length; i++) {
                 houses[i].returnStats();
