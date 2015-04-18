@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>You're a Sorting Hat, Harry!</title>
+    <script src="libs/phaser-2.3.0.js"></script>
+    <script src="libs/namey-api.js"></script>
+    <script src="student-gen.js"></script>
+                                    
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+  </head>
+<body>
+    <script type="text/javascript">
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    
+    var students = [];
+    var NUMSTUDENTS = 50; //Make twice as many!
+    var isLoaded = false;
+        
+    function preload() {
+        
+        var studentFactory = new StudentFactory();
+        //for (var i = 0; i < NUMSTUDENTS; i++) {
+            students.push(studentFactory.createStudent('male'));
+            students.push(studentFactory.createStudent('female'));
+        //}
+        
+    }
+    
+    function create() {
+        
+    }
+        
+    function update() {
+        len = students.length;
+        if (students[len-1].name != "ERRORNAME" && isLoaded === false) {
+            for (var i = 0; i < len; i++) {
+                students[i].returnStats();
+            }
+            isLoaded = true;
+        }
+            
+        
+        
+    }
+    
+    </script>
+  </body>
+</html>
+
