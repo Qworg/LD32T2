@@ -15,6 +15,11 @@ function StudentFactory() {
         namey.get({ count: 1, type: gender, frequency: 'rare', with_surname: true, callback: function(n) { console.log(n); student.name = n; }});
         
         student.stats = newStudentStats();
+        student.friends = [];
+        student.enemies = [];
+        student.societies = [];
+        student.house = null;
+        
         
         student.returnStats = function () {
             console.debug(student.gender + " student: " + student.name);
