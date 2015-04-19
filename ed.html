@@ -5,8 +5,11 @@
     <title>You're a Sorting Hat, Harry!</title>
     <script src="libs/phaser-2.3.0.js"></script>
     <script src="libs/namey-api.js"></script>
-    <script src="student-gen.js"></script>
-                                    
+    <script src="boot.js"></script>
+    <script src="preload.js"></script>
+    <script src="gametitle.js"></script>
+    <script src="thegame.js"></script>
+    <script src="gameover.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -15,39 +18,15 @@
   </head>
 <body>
     <script type="text/javascript">
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-    
-    var students = [];
-    var NUMSTUDENTS = 50; //Make twice as many!
-    var isLoaded = false;
-        
-    function preload() {
-        
-        var studentFactory = new StudentFactory();
-        //for (var i = 0; i < NUMSTUDENTS; i++) {
-            students.push(studentFactory.createStudent('male'));
-            students.push(studentFactory.createStudent('female'));
-        //}
-        
-    }
-    
-    function create() {
-        
-    }
-        
-    function update() {
-        len = students.length;
-        if (students[len-1].name != "ERRORNAME" && isLoaded === false) {
-            for (var i = 0; i < len; i++) {
-                students[i].returnStats();
-            }
-            isLoaded = true;
-        }
-            
-        
-        
-    }
-    
+      (function() {
+        var game = new Phaser.Game(640, 480, Phaser.CANVAS, "game");
+        game.state.add("Boot",boot);
+        game.state.add("Preload",preload);
+        game.state.add("GameTitle",gameTitle);
+        game.state.add("TheGame",theGame);
+        game.state.add("GameOver",gameOver);
+        game.state.start("Boot");
+      })();     
     </script>
   </body>
 </html>
