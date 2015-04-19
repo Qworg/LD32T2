@@ -2,7 +2,8 @@ var eventData =
 {
     "Troll Attack":{
         "co-op":true, 
-        "type": "singleChallenge",
+        "type":"singleChallenge",
+        "desc":"A terrible troll has broken into the building!  All of the teachers have convieniently fled.  It's up to you to defeat it!",
         "requirementKeys":["Strength of Body", "Strength in Numbers", "Quickness of Body", "Hardiness", "Selflessness"], 
         "winKeys":["Get Stronger!", "Stoic Resistances", "Leadership Training"], 
         "loseKeys":["Blow to the Head", "Pulled Something", "Never Had a Chance", "Nasty Scar"]
@@ -10,6 +11,7 @@ var eventData =
     "Magical SportsBall":{
         "co-op":true,
         "type":"houseChallenge",
+        "desc":"Time for another rousing round of incredibly dangerous sportsball between young children!  Who will survive?  Who will end up with permanent brain damage?",
         "requirementKeys":["Quickness of Body", "Shared Suffering", "Strength of Body", "A Cold Heart", "Alumni Assistance", "Let's Put our Heads Together"],
         "winKeys":["Energized Strength", "Energized Dexterity", "Energized Constitution", "Energized Intelligence", "Energized Charisma"],
         "loseKeys":["Demoralized Strength", "Demoralized Dexterity", "Demoralized Constitution", "Demoralized Intelligence", "Demoralized Charisma"]
