@@ -19,6 +19,7 @@ function StudentFactory() {
         student.enemies = [];
         student.societies = [];
         student.house = null;
+        student.year = 1;
         
         
         student.returnStats = function () {
@@ -29,15 +30,18 @@ function StudentFactory() {
         student.returnTextStats = function () {
             var textOutput = student.name + 
                 " is a " + student.gender + 
-                " student in House " + student.house + ".  They are " + 
+                ", " + yearToText(student.year) + " year" +
+                " student in House " + student.house + ". " +
+                capitalizeFirstLetter(genderToPronoun(student.gender)) + " is " + 
                 simpleNumberToTextValue(student.stats.strength) + " strong, " + 
-                simpleNumberToTextValue(student.stats.dexterity) + " dextrous, " +
+                simpleNumberToTextValue(student.stats.dexterity) + " dexterous, " +
                 simpleNumberToTextValue(student.stats.constitution) + " hardy, " + 
                 simpleNumberToTextValue(student.stats.intelligence) + " intelligent, and " +
-                simpleNumberToTextValue(student.stats.charisma) + " charismatic." + 
-                " They have " + simpleNumberToNegativeTextValue(student.stats.narcissism) + " narcissistic tendencies, " +
-                simpleNumberToNegativeTextValue(student.stats.machiavellianism) + " Machiavellian tendencies, and " +
-                simpleNumberToNegativeTextValue(student.stats.psychopathy) + " psychopathic tendencies.";
+                simpleNumberToTextValue(student.stats.charisma) + " charismatic. " + 
+                capitalizeFirstLetter(genderToPronoun(student.gender)) + " is " +         
+                studentNarcString(student.stats.narcissism) + ", " +
+                studentMachString(student.stats.machiavellianism) + ", and " +
+                studentPsychoString(student.stats.psychopathy) + ".";
             console.debug(textOutput);
         }
         
@@ -50,9 +54,9 @@ function StudentFactory() {
         var constitution = Math.random();
         var intelligence = Math.random();
         var charisma = Math.random();
-        var narcissism = Math.random();
-        var machiavellianism = Math.random();
-        var psychopathy = Math.random();
+        var narcissism = Math.random() - 0.5; //Negative? Selfless
+        var machiavellianism = Math.random() - 0.5; //Negative? Earnest
+        var psychopathy = Math.random() - 0.5; //Negative? Empathetic
         return {
             strength: strength,
             dexterity: dexterity,
@@ -63,5 +67,76 @@ function StudentFactory() {
             machiavellianism: machiavellianism,
             psychopathy: psychopathy
         };
+    }
+}
+
+
+
+function studentNarcString(narcIn) {
+    var adj = "narcissistic";
+    if (narcIn < 0) {
+        adj = "selfless";
+    }
+        
+    if (Math.abs(narcIn) > 0.4) {
+        return "incredibly " + adj;
+    }
+    if (Math.abs(narcIn) > 0.3) {
+        return "very " + adj;
+    }
+    if (Math.abs(narcIn) > 0.2) {
+        return "moderately " + adj;
+    }
+    if (Math.abs(narcIn) > 0.1) {
+        return "a little " + adj;
+    }
+    if (Math.abs(narcIn) > 0.0) {
+        return "a bit " + adj;
+    }
+}
+
+function studentMachString(machIn) {
+    var adj = "machiavellian";
+    if (machIn < 0) {
+        adj = "earnest";
+    }
+        
+    if (Math.abs(machIn) > 0.4) {
+        return "incredibly " + adj;
+    }
+    if (Math.abs(machIn) > 0.3) {
+        return "very " + adj;
+    }
+    if (Math.abs(machIn) > 0.2) {
+        return "moderately " + adj;
+    }
+    if (Math.abs(machIn) > 0.1) {
+        return "a little " + adj;
+    }
+    if (Math.abs(machIn) > 0.0) {
+        return "a bit " + adj;
+    }
+}
+
+function studentPsychoString(psychoIn) {
+    var adj = "psychopathic";
+    if (psychoIn < 0) {
+        adj = "empathetic";
+    }
+        
+    if (Math.abs(psychoIn) > 0.4) {
+        return "incredibly " + adj;
+    }
+    if (Math.abs(psychoIn) > 0.3) {
+        return "very " + adj;
+    }
+    if (Math.abs(psychoIn) > 0.2) {
+        return "moderately " + adj;
+    }
+    if (Math.abs(psychoIn) > 0.1) {
+        return "a little " + adj;
+    }
+    if (Math.abs(psychoIn) > 0.0) {
+        return "a bit " + adj;
     }
 }

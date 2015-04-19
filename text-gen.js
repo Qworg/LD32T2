@@ -30,3 +30,40 @@ function simpleNumberToNegativeTextValue(number) {
         return "severe";
     }
 }
+
+function yearToText(number) {
+    if (number === 1) {
+        return "first";
+    }
+    if (number === 2) {
+        return "second";
+    }
+    if (number === 3) {
+        return "third";
+    }
+    if (number === 4) {
+        return "fourth";
+    }
+    if (number === 5) {
+        return "fifth";
+    }
+    if (number === 6) {
+        return "sixth";
+    }
+    if (number === 7) {
+        return "seventh";
+    }
+}
+
+function genderToPronoun(gender) {
+    if (gender === "female") {
+        return "she";
+    }
+    if (gender === "male") {
+        return "he";
+    }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
