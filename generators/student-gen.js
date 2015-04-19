@@ -31,7 +31,7 @@ function StudentFactory() {
             var textOutput = student.name + 
                 " is a " + student.gender + 
                 ", " + yearToText(student.year) + " year" +
-                " student in House " + student.house + ". " +
+                " student in House " + student.house.name + ". " +
                 capitalizeFirstLetter(genderToPronoun(student.gender)) + " is " + 
                 simpleNumberToTextValue(student.stats.strength) + " strong, " + 
                 simpleNumberToTextValue(student.stats.dexterity) + " dexterous, " +
