@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>You're a Dumb, Harry!</title>
+    <title>You're a Sorting Hat, Harry!</title>
     <script src="libs/phaser-2.3.0.js"></script>
     <script src="libs/namey-api.js"></script>
-    <script src="text-gen.js"></script>
-    <script src="event-data.js"></script>
-    <script src="event-gen.js"></script>
-    <script src="student-gen.js"></script>
-    <script src="house-gen.js"></script>
+    <script src="generators/text-gen.js"></script>
+    <script src="data/event-data.js"></script>
+    <script src="generators/event-gen.js"></script>
+    <script src="generators/student-gen.js"></script>
+    <script src="generators/house-gen.js"></script>
                                     
     <style type="text/css">
         body {
@@ -23,6 +23,7 @@
     
     var students = [];
     var houses = [];
+    var events = [];
     var NUMSTUDENTS = 50; //Make twice as many!
     var NUMHOUSES = 4;
     var isLoaded = false;
@@ -39,6 +40,11 @@
             houses.push(houseFactory.createHouse(null));
         }
         
+                
+        //Grab an event
+        var eventFactory = new EventFactory();
+        events.push(eventFactory.createEvent(null));
+        
     }
     
     function create() {
@@ -48,14 +54,23 @@
     function update() {
         len = students.length;
         if (students[len-1].name != "ERRORNAME" && isLoaded === false) {
-            for (var i = 0; i < len; i++) {
-                students[i].returnTextStats();
-            }
             for (var i = 0; i < houses.length; i++) {
                 houses[i].returnStats();
             }
+            //Assign everyone a house
+            for (var i = 0; i < students.length; i++) {
+                var houseNum = Math.floor(Math.random() * houses.length);
+                students[i].house = houses[houseNum];
+                houses[houseNum].students.push(students[i]);
+            }
+            for (var i = 0; i < len; i++) {
+                students[i].returnTextStats();
+            }
+            events[0].returnEvent();
             isLoaded = true;
         }
+        
+
         
             
         

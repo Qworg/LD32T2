@@ -6,24 +6,21 @@ function EventFactory() {
             var eventKeysList = Object.keys(eventData);
             eventRandomGrab = Math.floor(Math.random() * eventKeysList.length);
             event = eventData[eventKeysList[eventRandomGrab]];
-            event.name = eventKeyList[eventRandomGrab];
+            event.name = eventKeysList[eventRandomGrab];
         }
         else {
             event = eventData[name];
             event.name = name;
         }
         
-        event.desc = getEventDesc(event.name);
-        event.image = getEventImage(event.name);
+        event.imagePath = "assets/"+name+".png";
         
         event.returnEvent = function () {
             console.debug(event.name +": ");
             console.debug(event.desc);
-            console.debug(event.requirements);
-            console.debug(event.consequences);
+            console.debug(event.requirementKeys);
         }
         
         return event;
     }
-    
 }
