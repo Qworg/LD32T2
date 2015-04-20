@@ -6,25 +6,31 @@ theGame.prototype = {
   create: function() {
     score = Math.floor(Math.random()*100);
     var width = this.game.world.width;
+    this.makeInstructions();
     
+    // display houses with fake data
     for( var i = 0; i < 4; i += 1) {
-      this.makeHouseDisplay( (width*i/4) + width/8 , this.game.world.height * 0.5, "house"+i);
+      var house = { students: [1,2,3], name: "house"+i };
+      this.makeHouseDisplay( (width*i/4) + width/8 , this.game.world.height * 0.5, house);
     }
 
-    this.makeInstructions();
+    // display incoming students with fake data
     this.makeIncomingStudentQueue( [ 'Alice', 'Bob', 'Charlie', 'Diane' ] );
   },
   clickedOver: function() {
     console.log('clicked game over button');
     this.game.state.start("GameOver",true, false, score);
   },
-  makeHouseDisplay : function( x, y, houseName) {
+  makeHouseDisplay : function( x, y, house) {
     var selectButton = this.game.add.button(x, y, 'smBlankBtn', this.houseSelected, this);
     selectButton.anchor.setTo(0.5,0.5);
-    selectButton.houseName = houseName;
+    selectButton.houseName = house.name;
     var titleStyle = { font: "bold 14px Arial", fill: solarized.base3, align: 'center' };
-    var nameTitle = this.game.add.text(x,y, houseName, titleStyle );
+    var nameTitle = this.game.add.text(x,y, house.name, titleStyle );
     nameTitle.anchor.setTo(0.5,0.5);
+    for( var i = 0; i < house.students.length; i += 1) {
+      this.drawStudent( x, y+i*20+40);
+    }
   },
   houseSelected : function(button) {
     console.log('you selected House ' + button.houseName);
