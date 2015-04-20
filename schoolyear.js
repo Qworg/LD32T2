@@ -2,10 +2,23 @@ var schoolYear = function(game) {
 }
 
 schoolYear.prototype = {
+  studentGroupList : [],
+  event : null, 
   preload: function() {
+    var eventFactory = new EventFactory();
+    studentRelationshipEngine(students);
+    this.studentGroupList = getStudentGroups(students);
+    this.event = eventFactory.createEvent(null);
+    this.event.returnEvent();
   },
   create: function() {
-    this.choices = [ 'apple', 'pear', 'cherry', 'blueberry'];
+    this.choices = [];
+    for (var i = 0; i < this.studentGroupList.length; i++) {
+        if (this.studentGroupList[i].studentGroup.length > 1) {
+            this.choices.push(this.studentGroupList[i].leader.name + "\n with " +                 
+                this.studentGroupList[i].studentGroup.length + " friends.");
+        }
+    }
     this.makeChoicesList();
   },
   count: 0,
@@ -41,10 +54,10 @@ schoolYear.prototype = {
   },
   
   makeChoiceButton: function(x,y,choice) {
-    var button = this.game.add.button(x,y, 'smBlankBtn', this.choiceSelected, this);
+    var button = this.game.add.button(x,y, 'blankBtn', this.choiceSelected, this);
     button.anchor.setTo(0.5,0.5);
     button.choice = choice;
-    var titleStyle = { font: "bold 14px Arial", fill: solarized.base3, align: 'center' };
+    var titleStyle = { font: "bold 14px Arial", fill: solarized.base3, align: 'center', lineSpacing: 3 };
     var title = this.game.add.text(x,y, choice, titleStyle );
     title.anchor.setTo(0.5,0.5);
     return title;

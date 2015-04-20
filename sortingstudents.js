@@ -2,7 +2,7 @@ var sortingStudents = function(game) {
   score = 0;
 }
 
-var NUMSTUDENTS = 10; //Make twice as many!
+var NUMSTUDENTS = 5; //Make twice as many!
 var MAXNAMEREQUESTSIZE = 10;
 var studentsComplete = 0;
 var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
@@ -83,7 +83,7 @@ sortingStudents.prototype = {
     return figure;
   },
   makeIncomingStudentQueue : function( students) {
-    var x = this.game.world.width/2;
+    var x = 0;//this.game.world.width/2;
     for( var i = 0; i < students.length; i += 1) {
       x += 30;
       students[i].gfx = this.drawStudent(x, this.game.world.height*0.3);
