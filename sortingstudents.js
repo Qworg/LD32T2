@@ -2,28 +2,37 @@ var sortingStudents = function(game) {
   score = 0;
 }
 
+var NUMSTUDENTS = 10; //Make twice as many!
+
 sortingStudents.prototype = {
   create: function() {
     score = Math.floor(Math.random()*100);
     var width = this.game.world.width;
     this.makeInstructions();
     
-    this.incomingStudents = [ { name: 'Alice' },
-                              { name: 'Bob' },
-                              { name: 'Charlie' },
-                              { name: 'Diane' } ];
-    this.houses = [ { name: 'house0', students: [] },
-                    { name: 'house1', students: [] },
-                    { name: 'house2', students: [] },
-                    { name: 'house3', students: [] } ];
+      
+//    this.incomingStudents = [ { name: 'Alice' },
+//                              { name: 'Bob' },
+//                              { name: 'Charlie' },
+//                              { name: 'Diane' } ];
+      this.incomingStudents = generateClass();
+//    this.houses = [ { name: 'house0', students: [] },
+//                    { name: 'house1', students: [] },
+//                    { name: 'house2', students: [] },
+//                    { name: 'house3', students: [] } ];
     // display houses with fake data
-    for( var i = 0; i < 4; i += 1) {
-      this.houses[i].gfx = this.makeHouseDisplay( (width*i/4) + width/8, 
-        this.game.world.height * 0.5, this.houses[i]);
-    }
+//    for( var i = 0; i < 4; i += 1) {
+//      this.houses[i].gfx = this.makeHouseDisplay( (width*i/4) + width/8, 
+//        this.game.world.height * 0.5, this.houses[i]);
+//    }
+      // display houses
+      for ( var i = 0; i < houses.length; i+= 1) {
+          houses[i].gfx = this.makeHouseDisplay( (width*i/NUMHOUSES) + width/(NUMHOUSES*2), 
+                                                this.game.world.height * 0.5, houses[i]);
+      }
 
     // display incoming students with fake data
-    this.makeIncomingStudentQueue( this.incomingStudents );
+    //this.makeIncomingStudentQueue( this.incomingStudents );
   },
   makeHouseDisplay : function( x, y, house) {
     var selectButton = this.game.add.button(x, y, 'smBlankBtn', this.houseSelected, this);
@@ -44,6 +53,8 @@ sortingStudents.prototype = {
     }
     var newStudent = this.incomingStudents.shift();
     targetHouse.students.push( newStudent);
+    newStudent.house = targetHouse;
+    students.push(newStudent);
     console.log( newStudent.name + ' moved to ' + targetHouse.name);
     
     var tween = this.game.add.tween(newStudent.gfx);

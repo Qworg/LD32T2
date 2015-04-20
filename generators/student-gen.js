@@ -1,9 +1,9 @@
 var students = [];
 var MAXNAMEREQUESTSIZE = 10;
-var NUMSTUDENTS = 25; //Make twice as many!
 var studentsComplete = 0;
 var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
 var AUTOSORTSTUDENTS = false;
+var studentFactory = new StudentFactory();
 
 function StudentFactory() {
     this.createStudent = function (gender, name) {
@@ -214,8 +214,10 @@ function getStudentGroups(studentsIn) {
 function generateClass() {
     //Generate a new class of students and add them to a house.
     //Fetch male and female names
+    var newClassOfStudents = [];
     for (var i = 0; i < NUMSTUDENTS; ) {
         var nameChunk = 0;
+        
         if (NUMSTUDENTS - i > MAXNAMEREQUESTSIZE) {
             nameChunk = MAXNAMEREQUESTSIZE;
         }
@@ -234,7 +236,7 @@ function generateClass() {
                                 newStudent.house = houses[houseNum];
                                 houses[houseNum].students.push(newStudent);
                             }
-                            students.push(newStudent);
+                            newClassOfStudents.push(newStudent);
                         }
                         studentsComplete+=1;
                     }});
@@ -249,13 +251,14 @@ function generateClass() {
                                 newStudent.house = houses[houseNum];
                                 houses[houseNum].students.push(newStudent);
                             }
-                            students.push(newStudent);
+                            newClassOfStudents.push(newStudent);
                         }
                         studentsComplete+=1;
                     }});
 
         i = i + nameChunk;
     }
+    return newClassOfStudents;
 }
 
 function studentNarcString(narcIn) {

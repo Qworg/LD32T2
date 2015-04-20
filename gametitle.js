@@ -23,6 +23,13 @@ gameTitle.prototype = {
       var playButton = this.game.add.button(centerX, this.game.world.height * 0.8,
           "play", this.playTheGame, this);
       playButton.anchor.setTo(0.5,0.5);
+      
+      var houseFactory = new HouseFactory();
+      //Generate Houses
+      houses.length = 0;
+      for (var i = 0; i < NUMHOUSES; i++) {
+        houses.push(houseFactory.createHouse(null));
+      }
     },
 
     playTheGame: function(){
