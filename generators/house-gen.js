@@ -1,3 +1,5 @@
+var houses = [];
+var NUMHOUSES = 4;
 function HouseFactory() {
     this.createHouse = function (name) {
         var house = {};
