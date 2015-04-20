@@ -94,16 +94,17 @@ function studentRelationshipEngine(studentsIn) {
             var relationshipScore = 0; //higher is better
             var enemyFriendMix = 0; //higher is better
             //Raw Magnetism
-            relationshipScore+=(studentsIn[j].charisma*CHARISMA_MULTIPLE);
+            relationshipScore+=(studentsIn[j].stats.charisma*CHARISMA_MULTIPLE);
             //Personality Conflicts
-            enemyFriendMix+=((1-(Math.abs(studentsIn[i].narcissism - studentsIn[j].narcissism)))*PERSONALITY_MULTIPLE);
-            enemyFriendMix+=((1-(Math.abs(studentsIn[i].machiavellianism - studentsIn[j].machiavellianism)))*PERSONALITY_MULTIPLE);
-            enemyFriendMix+=((1-(Math.abs(studentsIn[i].psychopathy - studentsIn[j].psychopathy)))*PERSONALITY_MULTIPLE);
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].stats.narcissism - studentsIn[j].stats.narcissism)))*PERSONALITY_MULTIPLE);
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].stats.machiavellianism - studentsIn[j].stats.machiavellianism)))*PERSONALITY_MULTIPLE);
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].stats.psychopathy - studentsIn[j].stats.psychopathy)))*PERSONALITY_MULTIPLE);
             if (studentsIn[i].house === studentsIn[j].house) {
                 //Share a house!   
                 var sharedHouse = studentsIn[i].house;
-                relationshipScore+=(studentsIn[j].charisma*HOUSE_MULTIPLE)
-                enemyFriendMix+=((sharedHouse.camaraderie - sharedHouse.politics)*HOUSE_MULTIPLE);
+                relationshipScore+=(studentsIn[j].stats.charisma*HOUSE_MULTIPLE)
+                enemyFriendMix+=((sharedHouse.stats.camaraderie -    
+                                  sharedHouse.stats.politics)*HOUSE_MULTIPLE);
             }
             //Calculate love/hate and amount
             var deadBandLow = 0.5;
@@ -141,6 +142,60 @@ function studentRelationshipEngine(studentsIn) {
 }
 
 
+function getStudentGroups(studentsIn) {
+    var studentGroups = [];
+    var len = studentsIn.length;
+    var studentMarkList = new Array(len);
+    while (--len >= 0) {
+        studentMarkList[len] = false;
+    }
+    for (int i = 0; i < studentsIn.length; i++) {
+        if (studentMarkList[i] === false) {
+            //We haven't visited this one yet!
+            var newStudentGroup = [];
+            newStudentGroup.push(studentsIn[i]);
+            studentMarkList[i] = true;
+            var leaderIndex = 0;
+            var leaderAmount = newStudentGroup[leaderIndex].stats.charisma;
+            var studentsQueue = [];
+            //OK, start stacking in the unmarked neighbours into a check list.
+            for (int j = 0; j<studentsIn[i].friends.length; j++){
+                var k = studentsIn.indexOf(studentsIn[i].friends[j]);
+                if (studentMarkList[k] === false) {
+                    studentsQueue.push(studentsIn[i].friends[j]);
+                }
+            }
+            //Repeat process above, walking the friend graph
+            while(studentsQueue.length > 0) {
+                newStudentGroup.push(studentsQueue.shift());
+                var endIndex = newStudentGroup.length - 1;
+                var k = studentsIn.indexOf(newStudentGroup[endIndex]);
+                if (studentMarkList[k] === true) {
+                    //Oops, must have been a tight friend group.  Pop it off and skip the rest.
+                    newStudentGroup.pop();
+                }
+                else {
+                    studentMarkList[k] = true;
+                    if (newStudentGroup[endIndex].stats.charisma > leaderAmount) {
+                        leaderAmount = newStudentGroup[endIndex].stats.charisma;
+                        leaderIndex = endIndex;
+                    }
+                    //OK, add all this one's friends!
+                    for (int j = 0; j<newStudentGroup[endIndex].friends.length; j++) {
+                        var n = studentsIn.indexOf(newStudentGroup[endIndex].friends[j]);
+                        if (studentMarkList[n] === false) {
+                            studentsQueue.push(newStudentGroup[endIndex].friends[j]);
+                        }
+                    }
+                }
+            }
+            //OK! Whole friend group added! Create the output object.
+            studentGroups.push({leaderIndex:leaderIndex, studentGroup:newStudentGroup});
+        }
+        //If true, we already touched it.  Skip!            
+    }
+    return studentGroups;
+}
 
 
 function studentNarcString(narcIn) {
