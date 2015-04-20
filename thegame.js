@@ -12,6 +12,7 @@ theGame.prototype = {
     }
 
     this.makeInstructions();
+    this.makeIncomingStudentQueue( [ 'Alice', 'Bob', 'Charlie', 'Diane' ] );
   },
   clickedOver: function() {
     console.log('clicked game over button');
@@ -35,5 +36,17 @@ theGame.prototype = {
       "Sort the incoming students!",
       instructionsStyle );
     instructions.anchor.setTo(0.5, 0.5);
+  },
+  drawStudent : function(x,y) {
+    var style = { font: "bold 24px Arial", fill: solarized.green, align: "center" };
+    var figure = this.game.add.text(x,y, '\u263A', style);
+    figure.anchor.setTo(0.5,0.5);
+  },
+  makeIncomingStudentQueue : function( students) {
+    var x = this.game.world.width/2;
+    for( var i = 0; i < students.length; i += 1) {
+      x += 30;
+      this.drawStudent(x, this.game.world.height*0.3);
+    }
   }
 }
