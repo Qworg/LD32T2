@@ -5,6 +5,7 @@
     <title>You're a Sorting Hat, Harry!</title>
     <script src="libs/phaser-2.3.0.js"></script>
     <script src="libs/namey-api.js"></script>
+    <script src="data/palette.js"></script>
     <script src="boot.js"></script>
     <script src="preload.js"></script>
     <script src="gametitle.js"></script>
@@ -14,12 +15,18 @@
         body {
             margin: 0;
         }
+
+        #gameContainer {
+            width: 640px;
+            height: 480px;
+        }
     </style>
   </head>
 <body>
+    <div id='gameContainer'></div>
     <script type="text/javascript">
       (function() {
-        var game = new Phaser.Game(640, 480, Phaser.CANVAS, "game");
+        var game = new Phaser.Game(640, 480, Phaser.CANVAS, "gameContainer");
         game.state.add("Boot",boot);
         game.state.add("Preload",preload);
         game.state.add("GameTitle",gameTitle);

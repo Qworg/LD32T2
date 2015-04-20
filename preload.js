@@ -11,6 +11,8 @@ preload.prototype = {
     //this.game.load.image("higher","assets/higher.png");
     this.game.load.image("lower","assets/lower.png");
     this.game.load.image("gameover","assets/gameover.png");
+    this.game.load.image('blankBtn',"assets/blank.png");
+    this.game.load.image('smBlankBtn',"assets/blank_100.png");
   },
     create: function(){
     this.game.state.start("GameTitle");
