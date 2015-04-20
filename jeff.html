@@ -21,15 +21,6 @@
     <script type="text/javascript">
     var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
     
-    var students = [];
-    var houses = [];
-    var events = [];
-    var MAXNAMEREQUESTSIZE = 10;
-    var NUMSTUDENTS = 25; //Make twice as many!
-    var NUMHOUSES = 4;
-    var studentsComplete = 0;
-    var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
-    var EVENTSPERYEAR = 10;
     var isLoaded = false;
     var houseFactory = new HouseFactory();
     var studentFactory = new StudentFactory();
@@ -56,58 +47,28 @@
         
     function update() {
         if (studentsComplete === TOTALSTUDENTLOOPS && isLoaded === false) {
-            for (var i = 0; i < students.length; i++) {
-                students[i].returnTextStats();
-            }
+//            for (var i = 0; i < students.length; i++) {
+//                students[i].returnTextStats();
+//            }
             events[0].returnEvent();
             isLoaded = true;
         }
         if (isLoaded === true) {
           //Do all the update work in here.
           //console.log("Number of Students: " + students.length)
-        }
-    }
-        
-    function generateClass() {
-        //Generate a new class of students and add them to a house.
-        //Fetch male and female names
-        for (var i = 0; i < NUMSTUDENTS; ) {
-            var nameChunk = 0;
-            if (NUMSTUDENTS - i > MAXNAMEREQUESTSIZE) {
-                nameChunk = MAXNAMEREQUESTSIZE;
-            }
-            else {
-                nameChunk = NUMSTUDENTS - i;
-            }
+          
+          //SORTING MUST HAPPEN FIRST  
+//          studentRelationshipEngine(students);
+//          var studentGroupList = getStudentGroups(students);
+//          for (var i = 0; i < studentGroupList.length; i++) {
+//              if (studentGroupList[i].studentGroup.length > 1) {
+//                  console.log("Student group is led by: " + studentGroupList[i].leader.name);
+//                  studentGroupList[i].leader.returnTextStats();
+//                  console.log("Student group has " + studentGroupList[i].studentGroup.length + " members.");
+//              }
+//          }
             
-            namey.get({ count: nameChunk, type: 'male', frequency: 'rare', with_surname: true, 
-                        callback: function(n) { 
-                            console.log(n);
-                            var chunkSize = n.length;
-                            for (var i = 0; i < chunkSize; i++) {
-                                var newStudent = studentFactory.createStudent('male', n[i]); 
-                                var houseNum = Math.floor(Math.random() * houses.length);
-                                newStudent.house = houses[houseNum];
-                                houses[houseNum].students.push(newStudent);
-                                students.push(newStudent);
-                            }
-                            studentsComplete+=1;
-                        }});
-            namey.get({ count: nameChunk, type: 'female', frequency: 'rare', with_surname: true, 
-                        callback: function(n) { 
-                            console.log(n);
-                            var chunkSize = n.length;
-                            for (var i = 0; i < chunkSize; i++) {
-                                var newStudent = studentFactory.createStudent('female', n[i]);
-                                var houseNum = Math.floor(Math.random() * houses.length);
-                                newStudent.house = houses[houseNum];
-                                houses[houseNum].students.push(newStudent);
-                                students.push(newStudent);
-                            }
-                            studentsComplete+=1;
-                        }});
             
-            i = i + nameChunk;
         }
     }
     

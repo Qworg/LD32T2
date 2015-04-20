@@ -1,3 +1,6 @@
+var events = [];
+var EVENTSPERYEAR = 10;
+
 function EventFactory() {
     this.createEvent = function (name) {
         var event = {};
@@ -24,3 +27,5 @@ function EventFactory() {
         return event;
     }
 }
+
+//function EventEngine() {
