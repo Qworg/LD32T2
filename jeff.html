@@ -24,57 +24,91 @@
     var students = [];
     var houses = [];
     var events = [];
-    var NUMSTUDENTS = 50; //Make twice as many!
+    var MAXNAMEREQUESTSIZE = 10;
+    var NUMSTUDENTS = 25; //Make twice as many!
     var NUMHOUSES = 4;
+    var studentsComplete = 0;
+    var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
+    var EVENTSPERYEAR = 10;
     var isLoaded = false;
+    var houseFactory = new HouseFactory();
+    var studentFactory = new StudentFactory();
+    var eventFactory = new EventFactory();
         
     function preload() {
         
-        var studentFactory = new StudentFactory();
-        //for (var i = 0; i < NUMSTUDENTS; i++) {
-            students.push(studentFactory.createStudent('male'));
-            students.push(studentFactory.createStudent('female'));
-        //}
-        var houseFactory = new HouseFactory();
+        //Generate Houses
         for (var i = 0; i < NUMHOUSES; i++) {
             houses.push(houseFactory.createHouse(null));
         }
         
-                
+        //Generate Students
+        generateClass();
+        
         //Grab an event
-        var eventFactory = new EventFactory();
         events.push(eventFactory.createEvent(null));
         
     }
     
     function create() {
-        
+
     }
         
     function update() {
-        len = students.length;
-        if (students[len-1].name != "ERRORNAME" && isLoaded === false) {
-            for (var i = 0; i < houses.length; i++) {
-                houses[i].returnStats();
-            }
-            //Assign everyone a house
+        if (studentsComplete === TOTALSTUDENTLOOPS && isLoaded === false) {
             for (var i = 0; i < students.length; i++) {
-                var houseNum = Math.floor(Math.random() * houses.length);
-                students[i].house = houses[houseNum];
-                houses[houseNum].students.push(students[i]);
-            }
-            for (var i = 0; i < len; i++) {
                 students[i].returnTextStats();
             }
             events[0].returnEvent();
             isLoaded = true;
         }
+        if (isLoaded === true) {
+          //Do all the update work in here.
+          //console.log("Number of Students: " + students.length)
+        }
+    }
         
-
-        
+    function generateClass() {
+        //Generate a new class of students and add them to a house.
+        //Fetch male and female names
+        for (var i = 0; i < NUMSTUDENTS; ) {
+            var nameChunk = 0;
+            if (NUMSTUDENTS - i > MAXNAMEREQUESTSIZE) {
+                nameChunk = MAXNAMEREQUESTSIZE;
+            }
+            else {
+                nameChunk = NUMSTUDENTS - i;
+            }
             
-        
-        
+            namey.get({ count: nameChunk, type: 'male', frequency: 'rare', with_surname: true, 
+                        callback: function(n) { 
+                            console.log(n);
+                            var chunkSize = n.length;
+                            for (var i = 0; i < chunkSize; i++) {
+                                var newStudent = studentFactory.createStudent('male', n[i]); 
+                                var houseNum = Math.floor(Math.random() * houses.length);
+                                newStudent.house = houses[houseNum];
+                                houses[houseNum].students.push(newStudent);
+                                students.push(newStudent);
+                            }
+                            studentsComplete+=1;
+                        }});
+            namey.get({ count: nameChunk, type: 'female', frequency: 'rare', with_surname: true, 
+                        callback: function(n) { 
+                            console.log(n);
+                            var chunkSize = n.length;
+                            for (var i = 0; i < chunkSize; i++) {
+                                var newStudent = studentFactory.createStudent('female', n[i]);
+                                var houseNum = Math.floor(Math.random() * houses.length);
+                                newStudent.house = houses[houseNum];
+                                houses[houseNum].students.push(newStudent);
+                                students.push(newStudent);
+                            }
+                            studentsComplete+=1;
+                        }});
+            
+            i = i + nameChunk;
+        }
     }
     
     </script>

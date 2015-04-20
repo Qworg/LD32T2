@@ -1,6 +1,14 @@
 function StudentFactory() {
-    this.createStudent = function (gender) {
+    this.createStudent = function (gender, name) {
         var student = {};
+        
+        student.name = "ERRORNAME";
+        if (name === null) {
+            namey.get({ count: 1, type: gender, frequency: 'rare', with_surname: true, 
+                       callback: function(n) { console.log(n); student.name = n; }});
+        } else {
+            student.name = name;
+        }
         
         /*if (gender === "female") {
             student = new FemaleStudent();
@@ -10,10 +18,7 @@ function StudentFactory() {
         }*/
         
         
-        student.gender = gender;
-        student.name = "ERRORNAME";
-        namey.get({ count: 1, type: gender, frequency: 'rare', with_surname: true, callback: function(n) { console.log(n); student.name = n; }});
-        
+        student.gender = gender;        
         student.stats = newStudentStats();
         student.friends = [];
         student.enemies = [];
@@ -70,6 +75,12 @@ function StudentFactory() {
     }
 }
 
+
+function studentRelationshipEngine(studentsIn) {
+    for (int i = 0; i < studentsIn.length; i++) {
+        
+    
+}
 
 
 function studentNarcString(narcIn) {
