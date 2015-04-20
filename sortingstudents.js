@@ -1,8 +1,8 @@
-var theGame = function(game) {
+var sortingStudents = function(game) {
   score = 0;
 }
 
-theGame.prototype = {
+sortingStudents.prototype = {
   create: function() {
     score = Math.floor(Math.random()*100);
     var width = this.game.world.width;
@@ -51,7 +51,11 @@ theGame.prototype = {
               y: targetHouse.gfx.y+targetHouse.students.length*30}
               , 1000);
     tween.start();
-  },
+    
+    if( this.incomingStudents.length == 0) {
+      tween.onComplete.add(function(){ this.game.state.start("SchoolYear"); }, this);
+    }
+},
   makeInstructions : function() {
     var instructionsStyle = { font: "bold 14px Arial", fill: solarized.base01, align: "center",
       wordWrap: true, wordWrapWidth: this.game.world.width * 0.7 };

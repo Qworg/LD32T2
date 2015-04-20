@@ -9,7 +9,8 @@
     <script src="boot.js"></script>
     <script src="preload.js"></script>
     <script src="gametitle.js"></script>
-    <script src="thegame.js"></script>
+    <script src="sortingstudents.js"></script>
+    <script src="schoolyear.js"></script>
     <script src="gameover.js"></script>
     <style type="text/css">
         body {
@@ -30,7 +31,8 @@
         game.state.add("Boot",boot);
         game.state.add("Preload",preload);
         game.state.add("GameTitle",gameTitle);
-        game.state.add("TheGame",theGame);
+        game.state.add("SortingStudents",sortingStudents);
+        game.state.add("SchoolYear", schoolYear);
         game.state.add("GameOver",gameOver);
         game.state.start("Boot");
       })();     
