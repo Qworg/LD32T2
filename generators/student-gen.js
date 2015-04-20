@@ -1,9 +1,4 @@
 var students = [];
-var MAXNAMEREQUESTSIZE = 10;
-var studentsComplete = 0;
-var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
-var AUTOSORTSTUDENTS = false;
-var studentFactory = new StudentFactory();
 
 function StudentFactory() {
     this.createStudent = function (gender, name) {
@@ -210,56 +205,6 @@ function getStudentGroups(studentsIn) {
     return studentGroups;
 }
 
-
-function generateClass() {
-    //Generate a new class of students and add them to a house.
-    //Fetch male and female names
-    var newClassOfStudents = [];
-    for (var i = 0; i < NUMSTUDENTS; ) {
-        var nameChunk = 0;
-        
-        if (NUMSTUDENTS - i > MAXNAMEREQUESTSIZE) {
-            nameChunk = MAXNAMEREQUESTSIZE;
-        }
-        else {
-            nameChunk = NUMSTUDENTS - i;
-        }
-
-        namey.get({ count: nameChunk, type: 'male', frequency: 'rare', with_surname: true, 
-                    callback: function(n) { 
-                        console.log(n);
-                        var chunkSize = n.length;
-                        for (var i = 0; i < chunkSize; i++) {
-                            var newStudent = studentFactory.createStudent('male', n[i]); 
-                            if (AUTOSORTSTUDENTS === true) {
-                                var houseNum = Math.floor(Math.random() * houses.length);
-                                newStudent.house = houses[houseNum];
-                                houses[houseNum].students.push(newStudent);
-                            }
-                            newClassOfStudents.push(newStudent);
-                        }
-                        studentsComplete+=1;
-                    }});
-        namey.get({ count: nameChunk, type: 'female', frequency: 'rare', with_surname: true, 
-                    callback: function(n) { 
-                        console.log(n);
-                        var chunkSize = n.length;
-                        for (var i = 0; i < chunkSize; i++) {
-                            var newStudent = studentFactory.createStudent('female', n[i]);
-                            if (AUTOSORTSTUDENTS === true) {
-                                var houseNum = Math.floor(Math.random() * houses.length);
-                                newStudent.house = houses[houseNum];
-                                houses[houseNum].students.push(newStudent);
-                            }
-                            newClassOfStudents.push(newStudent);
-                        }
-                        studentsComplete+=1;
-                    }});
-
-        i = i + nameChunk;
-    }
-    return newClassOfStudents;
-}
 
 function studentNarcString(narcIn) {
     var adj = "narcissistic";

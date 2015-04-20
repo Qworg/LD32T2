@@ -3,37 +3,34 @@ var sortingStudents = function(game) {
 }
 
 var NUMSTUDENTS = 10; //Make twice as many!
+var MAXNAMEREQUESTSIZE = 10;
+var studentsComplete = 0;
+var TOTALSTUDENTLOOPS = (Math.ceil(NUMSTUDENTS/MAXNAMEREQUESTSIZE))*2;
+var AUTOSORTSTUDENTS = false;
+var isLoaded = false;
 
 sortingStudents.prototype = {
+  
   create: function() {
     score = Math.floor(Math.random()*100);
     var width = this.game.world.width;
     this.makeInstructions();
-    
-      
-//    this.incomingStudents = [ { name: 'Alice' },
-//                              { name: 'Bob' },
-//                              { name: 'Charlie' },
-//                              { name: 'Diane' } ];
-      this.incomingStudents = generateClass();
-//    this.houses = [ { name: 'house0', students: [] },
-//                    { name: 'house1', students: [] },
-//                    { name: 'house2', students: [] },
-//                    { name: 'house3', students: [] } ];
-    // display houses with fake data
-//    for( var i = 0; i < 4; i += 1) {
-//      this.houses[i].gfx = this.makeHouseDisplay( (width*i/4) + width/8, 
-//        this.game.world.height * 0.5, this.houses[i]);
-//    }
-      // display houses
-      for ( var i = 0; i < houses.length; i+= 1) {
-          houses[i].gfx = this.makeHouseDisplay( (width*i/NUMHOUSES) + width/(NUMHOUSES*2), 
-                                                this.game.world.height * 0.5, houses[i]);
-      }
+    this.incomingStudents = [];
+    this.generateClass();
 
-    // display incoming students with fake data
-    //this.makeIncomingStudentQueue( this.incomingStudents );
+    
   },
+  classCallback : function () { 
+      var width = this.game.world.width;  
+          // display houses
+          for ( var i = 0; i < houses.length; i+= 1) {
+              houses[i].gfx = this.makeHouseDisplay( (width*i/NUMHOUSES) + width/(NUMHOUSES*2), 
+                                                    this.game.world.height * 0.5, houses[i]);
+          }
+            // display incoming students with data
+            console.log("Number of incoming students: " + this.incomingStudents.length);
+            this.makeIncomingStudentQueue( this.incomingStudents );
+      },
   makeHouseDisplay : function( x, y, house) {
     var selectButton = this.game.add.button(x, y, 'smBlankBtn', this.houseSelected, this);
     selectButton.anchor.setTo(0.5,0.5);
@@ -44,11 +41,14 @@ sortingStudents.prototype = {
     return nameTitle;
   },
   houseSelected : function(button) {
+    if (this.incomingStudents.length == 0) {
+        return;
+    }
     console.log('you selected House ' + button.houseName);
-    var targetHouse = this.houses[0];
-    for( var i = 0; i < this.houses.length; i+=1) {
-      if( this.houses[i].name == button.houseName) {
-        targetHouse = this.houses[i];
+    var targetHouse = houses[0];
+    for( var i = 0; i < houses.length; i+=1) {
+      if( houses[i].name == button.houseName) {
+        targetHouse = houses[i];
       }
     }
     var newStudent = this.incomingStudents.shift();
@@ -63,6 +63,7 @@ sortingStudents.prototype = {
               , 1000);
     tween.start();
     
+    console.log ("Students Left: " + this.incomingStudents.length);
     if( this.incomingStudents.length == 0) {
       tween.onComplete.add(function(){ this.game.state.start("SchoolYear"); }, this);
     }
@@ -88,4 +89,61 @@ sortingStudents.prototype = {
       students[i].gfx = this.drawStudent(x, this.game.world.height*0.3);
     }
   },
+  generateClass : function( ) {
+    //Generate a new class of students and add them to a house.
+    //Fetch male and female names
+    var newClassOfStudents = this.incomingStudents;
+    var studentFactory = new StudentFactory();
+      for (var i = 0; i < NUMSTUDENTS; ) {
+        var nameChunk = 0;
+        
+        if (NUMSTUDENTS - i > MAXNAMEREQUESTSIZE) {
+            nameChunk = MAXNAMEREQUESTSIZE;
+        }
+        else {
+            nameChunk = NUMSTUDENTS - i;
+        }
+
+        namey.get({ count: nameChunk, type: 'male', frequency: 'rare', with_surname: true, 
+                    callback: function(n) { 
+                        console.log(n);
+                        var chunkSize = n.length;
+                        for (var i = 0; i < chunkSize; i++) {
+                            var newStudent = studentFactory.createStudent('male', n[i]); 
+                            if (AUTOSORTSTUDENTS === true) {
+                                var houseNum = Math.floor(Math.random() * houses.length);
+                                newStudent.house = houses[houseNum];
+                                houses[houseNum].students.push(newStudent);
+                            }
+                            newClassOfStudents.push(newStudent);
+                        }
+                        studentsComplete+=1;
+                    }});
+        namey.get({ count: nameChunk, type: 'female', frequency: 'rare', with_surname: true, 
+                    callback: function(n) { 
+                        console.log(n);
+                        var chunkSize = n.length;
+                        for (var i = 0; i < chunkSize; i++) {
+                            var newStudent = studentFactory.createStudent('female', n[i]);
+                            if (AUTOSORTSTUDENTS === true) {
+                                var houseNum = Math.floor(Math.random() * houses.length);
+                                newStudent.house = houses[houseNum];
+                                houses[houseNum].students.push(newStudent);
+                            }
+                            newClassOfStudents.push(newStudent);
+                        }
+                        studentsComplete+=1;
+                    }});
+
+        i = i + nameChunk;
+    }
+    //this.classCallback(newClassOfStudents);
+  },
+  update : function() {
+   if (studentsComplete === TOTALSTUDENTLOOPS && isLoaded === false) {
+        
+       this.classCallback();
+       isLoaded = true;
+    }   
+  }
 }
