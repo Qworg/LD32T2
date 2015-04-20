@@ -22,6 +22,8 @@ function StudentFactory() {
         student.stats = newStudentStats();
         student.friends = [];
         student.enemies = [];
+        student.likes = [];
+        student.dislikes = [];
         student.societies = [];
         student.house = null;
         student.year = 1;
@@ -77,10 +79,68 @@ function StudentFactory() {
 
 
 function studentRelationshipEngine(studentsIn) {
+    var CHARISMA_MULTIPLE = 5;
+    var PERSONALITY_MULTIPLE = 1;
+    var HOUSE_MULTIPLE = 3;
+    //var relationshipsScoreList = [];
     for (int i = 0; i < studentsIn.length; i++) {
-        
-    
+        //Clear all your current relationships and rebuild.
+        studentsIn[i].likes.length = 0;
+        studentsIn[i].dislikes.length = 0;
+        studentsIn[i].friends.length = 0;
+        studentsIn[i].enemies.length = 0;
+        for (int j = 0; j < studentsIn.length; i++) {
+            //Goal here is to find the friends/enemies tree in a single pass.
+            var relationshipScore = 0; //higher is better
+            var enemyFriendMix = 0; //higher is better
+            //Raw Magnetism
+            relationshipScore+=(studentsIn[j].charisma*CHARISMA_MULTIPLE);
+            //Personality Conflicts
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].narcissism - studentsIn[j].narcissism)))*PERSONALITY_MULTIPLE);
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].machiavellianism - studentsIn[j].machiavellianism)))*PERSONALITY_MULTIPLE);
+            enemyFriendMix+=((1-(Math.abs(studentsIn[i].psychopathy - studentsIn[j].psychopathy)))*PERSONALITY_MULTIPLE);
+            if (studentsIn[i].house === studentsIn[j].house) {
+                //Share a house!   
+                var sharedHouse = studentsIn[i].house;
+                relationshipScore+=(studentsIn[j].charisma*HOUSE_MULTIPLE)
+                enemyFriendMix+=((sharedHouse.camaraderie - sharedHouse.politics)*HOUSE_MULTIPLE);
+            }
+            //Calculate love/hate and amount
+            var deadBandLow = 0.5;
+            var deadBandHigh = 2.5;
+            var deadBandChange = (relationshipScore - 4)*0.25;
+            deadBandLow+=deadBandChange;
+            deadBandHigh-=deadBandChange;
+            if (enemyFriendMix >= deadBandHigh) {
+                studentsIn[i].likes[studentsIn[j]] = enemyFriendMix;
+            }
+            if (enemyFriendMix < deadBandLow) {
+                studentsIn[i].dislikes[studentsIn[j]] = enemyFriendMix;
+            }
+        }
+    }
+    //Now we have all the likes and dislikes.  Look for mutual sets for friends/enemies.
+    for (int i = 0; i < studentsIn.length; i++) {
+        //Look at all the likes for mutual likes.
+        var relationshipKeys = Object.keys(studentsIn[i].likes);
+        for (int j = 0; j < relationshipKeys.length; j++) {
+            if (studentsIn[i] in relationshipKeys[j].likes) {
+                //MUTUAL LIKES!  We're FWENDS!
+                studentsIn[i].friends[relationshipKeys[j]] = studentsIn[i].likes[relationshipKeys[j]];
+            }
+        }
+        //Look at all the dislikes for mutual dislikes
+        relationshipKeys = Object.keys(studentsIn[i].dislikes);
+        for (int j = 0; j < relationshipKeys.length; j++) {
+            if (studentsIn[i] in relationshipKeys[j].dislikes) {
+                //MUTUAL DISLIKES! >_< We're NMEs
+                studentsIn[i].enemies[relationshipKeys[j]] = studentsIn[i].dislikes[relationshipKeys[j]];
+            }
+        }
+    }
 }
+
+
 
 
 function studentNarcString(narcIn) {
