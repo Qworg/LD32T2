@@ -10,7 +10,7 @@ schoolYear.prototype = {
     var eventFactory = new EventFactory();
     studentRelationshipEngine(students);
     this.studentGroupList = getStudentGroups(students);
-    this.event = eventFactory.createEvent(null);
+    this.event = eventFactory.createEvent("Troll Attack");
     this.event.returnEvent();
   },
   create: function() {
@@ -65,6 +65,25 @@ schoolYear.prototype = {
     var leaderName = button.choice.split(' ')[0] + ' ' + button.choice.split(' ')[1];
     leaderName = leaderName.split('\n')[0];
     console.log( leaderName + ' is the leader');
+//    var leaderObj;
+//    for( var i=0; i<students.length; i+=1) {
+//      if( students[i].name == name) {
+//        leaderObj = students[i];
+//      }
+//    }
+//    for(var i = 0; i<this.studentGroupList.length; i++) {
+//        //Find Group
+//        if (this.studentGroupList[i].leader === leaderObj) {
+//            var success = EventEngine(this.event, this.studentGroupList[i]);
+//            if (success) {
+//                console.log(this.event.winDesc);
+//            }
+//            else {
+//                console.log(this.event.loseDesc);
+//            }
+//            break;
+//        }
+//    } 
     this.killStudent( leaderName);
     this.game.state.start("SchoolYear");
   },
