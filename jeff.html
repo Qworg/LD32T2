@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>You're a Sorting Hat, Harry!</title>
+    <script src="libs/phaser-2.3.0.js"></script>
+    <script src="libs/namey-api.js"></script>
+    <script src="generators/text-gen.js"></script>
+    <script src="data/event-data.js"></script>
+    <script src="generators/event-gen.js"></script>
+    <script src="generators/student-gen.js"></script>
+    <script src="generators/house-gen.js"></script>
+                                    
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+  </head>
+<body>
+    <script type="text/javascript">
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    
+    var isLoaded = false;
+    var houseFactory = new HouseFactory();
+    var studentFactory = new StudentFactory();
+    var eventFactory = new EventFactory();
+        
+    function preload() {
+        
+        //Generate Houses
+        for (var i = 0; i < NUMHOUSES; i++) {
+            houses.push(houseFactory.createHouse(null));
+        }
+        
+        //Generate Students
+        generateClass();
+        
+        //Grab an event
+        events.push(eventFactory.createEvent(null));
+        
+    }
+    
+    function create() {
+
+    }
+        
+    function update() {
+        if (studentsComplete === TOTALSTUDENTLOOPS && isLoaded === false) {
+//            for (var i = 0; i < students.length; i++) {
+//                students[i].returnTextStats();
+//            }
+            events[0].returnEvent();
+            isLoaded = true;
+        }
+        if (isLoaded === true) {
+          //Do all the update work in here.
+          //console.log("Number of Students: " + students.length)
+          
+          //SORTING MUST HAPPEN FIRST  
+//          studentRelationshipEngine(students);
+//          var studentGroupList = getStudentGroups(students);
+//          for (var i = 0; i < studentGroupList.length; i++) {
+//              if (studentGroupList[i].studentGroup.length > 1) {
+//                  console.log("Student group is led by: " + studentGroupList[i].leader.name);
+//                  studentGroupList[i].leader.returnTextStats();
+//                  console.log("Student group has " + studentGroupList[i].studentGroup.length + " members.");
+//              }
+//          }
+            
+            
+        }
+    }
+    
+    </script>
+  </body>
+</html>
+
