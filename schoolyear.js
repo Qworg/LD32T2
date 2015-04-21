@@ -12,17 +12,28 @@ schoolYear.prototype = {
     this.studentGroupList = getStudentGroups(students);
     this.event = eventFactory.createEvent("Troll Attack");
     this.event.returnEvent();
+
   },
   create: function() {
     this.makeProgressBar( schoolYearProgress);
+    var groups = 0;
     this.choices = [];
     for (var i = 0; i < this.studentGroupList.length; i++) {
         if (this.studentGroupList[i].studentGroup.length > 1) {
+            groups += 1;
             this.choices.push(this.studentGroupList[i].leader.name + "\n with " +                 
                 this.studentGroupList[i].studentGroup.length + " friends.");
         }
     }
     this.makeChoicesList();
+
+    console.log( groups + " groups are left");
+    if( schoolYearProgress >= .9 ) {
+      this.game.state.start("GameOver");
+    }
+    if( groups == 0) {
+      this.game.state.start("GameOver");
+    }
   },
   update: function() {
   },
