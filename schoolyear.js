@@ -1,6 +1,8 @@
 var schoolYear = function(game) {
 }
 
+var schoolYearProgress = 0;
+
 schoolYear.prototype = {
   studentGroupList : [],
   event : null, 
@@ -12,6 +14,7 @@ schoolYear.prototype = {
     this.event.returnEvent();
   },
   create: function() {
+    this.makeProgressBar( schoolYearProgress);
     this.choices = [];
     for (var i = 0; i < this.studentGroupList.length; i++) {
         if (this.studentGroupList[i].studentGroup.length > 1) {
@@ -21,17 +24,10 @@ schoolYear.prototype = {
     }
     this.makeChoicesList();
   },
-  count: 0,
   update: function() {
-    this.count += 1;
-    if( this.count > 60 ) {
-      this.progress = Math.random();
-      this.makeProgressBar();
-      this.count = 0;
-    }
   },
 
-  makeProgressBar: function() {
+  makeProgressBar: function( progress) {
     var maxWidth = this.game.world.width-100;
     if( this.bar) {
       this.bar.clear();
@@ -40,7 +36,7 @@ schoolYear.prototype = {
     this.bar.beginFill( Phaser.Color.hexToRGB( solarized.base1));
     this.bar.drawRect(0,0,maxWidth,50);
     this.bar.beginFill( Phaser.Color.hexToRGB( solarized.orange));
-    this.bar.drawRect(0,0,maxWidth*this.progress,50);
+    this.bar.drawRect(0,0,maxWidth*progress,50);
   },
 
   makeChoicesList: function() {
@@ -65,6 +61,36 @@ schoolYear.prototype = {
 
   choiceSelected: function( button) {
     console.log( button.choice + " selected");
+    schoolYearProgress += 0.1;
+    var leaderName = button.choice.split(' ')[0] + ' ' + button.choice.split(' ')[1];
+    leaderName = leaderName.split('\n')[0];
+    console.log( leaderName + ' is the leader');
+    this.killStudent( leaderName);
+    this.game.state.start("SchoolYear");
+  },
+
+  killStudent : function( name) {
+    var studentObj;
+    var removeIndex;
+    for( var i=0; i<students.length; i+=1) {
+      if( students[i].name == name) {
+        studentObj = students[i];
+        removeIndex = i;
+      }
+    }
+    
+    // remove from house
+    var hs = studentObj.house.students;
+    var hsri;
+    for( var i=0; i< hs.length; i+=1) {
+      if( hs[i].name == name) {
+        hsri = i;
+      }
+    }
+    hs.splice(hsri, 1);
+
+    // remove fromi students
+    students.splice(removeIndex, 1);
   }
 }
 
