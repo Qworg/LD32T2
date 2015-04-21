@@ -50,11 +50,11 @@ var requirementData =
     "Machiavellian Machinations":{"co-op":false, "stat":"machiavellianism", "amount":0.2, "success":"above"},
     "Empathy":{"co-op":false, "stat":"psychopathy", "amount":-0.2, "success":"below"},
     "A Cold Heart":{"co-op":false, "stat":"psychopathy", "amount":0.2, "success":"above"},
-    "Magical Artifacts":{"co-op":true, "stat":"artifacts", "amount":true, "success":"match"},
-    "Alumni Assistance":{"co-op":true, "stat":"alumni", "amount":true, "success":"match"},
-    "A Little Help from Dead Friends":{"co-op":true, "stat":"helpfulGhosts", "amount":true, "success":"match"},
-    "Cash is King":{"co-op":true, "stat":"cashResources", "amount":true, "success":"match"},
-    "Secret Tomes and Special Spells":{"co-op":true, "stat":"magicResources", "amount":true, "success":"match"}   
+    "Magical Artifacts":{"co-op":false, "stat":"artifacts", "amount":true, "success":"match"},
+    "Alumni Assistance":{"co-op":false, "stat":"alumni", "amount":true, "success":"match"},
+    "A Little Help from Dead Friends":{"co-op":false, "stat":"helpfulGhosts", "amount":true, "success":"match"},
+    "Cash is King":{"co-op":false, "stat":"cashResources", "amount":true, "success":"match"},
+    "Secret Tomes and Special Spells":{"co-op":false, "stat":"magicResources", "amount":true, "success":"match"}   
 };
 
 var consequenceData =

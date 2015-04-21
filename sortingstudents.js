@@ -52,6 +52,12 @@ sortingStudents.prototype = {
       }
     }
     var newStudent = this.incomingStudents.shift();
+    //Give the student house properties.
+    newStudent.stats.artifacts = targetHouse.stats.artifacts;
+    newStudent.stats.alumni = targetHouse.stats.alumni;
+    newStudent.stats.helpfulGhosts = targetHouse.stats.helpfulGhosts;
+    newStudent.stats.magicResources = targetHouse.stats.magicResources;
+    newStudent.stats.cashResources = targetHouse.stats.cashResources;
     targetHouse.students.push( newStudent);
     newStudent.house = targetHouse;
     students.push(newStudent);
