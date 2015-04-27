@@ -88,11 +88,31 @@ function EventEngine(event, choices) {
                 }
             }
         } 
-//        else {
-//            //SINGLE PERSON
-//            var studentIn = choices;
-//            
-//            for (var i = 0; i < event.requirementKeys.length; i++) {
+        else {
+            //SINGLE PERSON
+            var studentIn = choices;
+            for (var i = 0; i < event.requirementKeys.length; i++) {
+                if (event.requirementKeys[i].success === "above") {
+                    if (studentIn.stats[event.requirementKeys[i].stat] > event.requirementKeys[i].amount) {
+                                hasStat = true;
+                    }
+                }
+                else if (event.requirementKeys[i].success === "below") {
+                    if (studentIn.stats[event.requirementKeys[i].stat] < event.requirementKeys[i].amount) {
+                        hasStat = true;
+                    }
+                }
+                else if (event.requirementKeys[i].success === "match") {
+                    if (studentIn.stats[event.requirementKeys[i].stat] === event.requirementKeys[i].amount) {
+                        hasStat = true;
+                    }
+                }
+                    
+                if (hasStat === false) {
+                    success = false;
+                }
+            }
+        }
         if (success === true) {
             //Apply win benefits
             for (var i = 0; i < event.winKeys.length; i++) {
